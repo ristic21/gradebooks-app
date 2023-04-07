@@ -1,10 +1,10 @@
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
-export const Page = ({ children }) => {
+export const Page = ({ isAuthenticated, setIsAuthenticated, handleLogout, children }) => {
   return (
     <div>
-      <Header />
+      <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} handleLogout={handleLogout} />
       {children}
       <Footer />
     </div>
