@@ -1,24 +1,19 @@
 import httpService from "./HttpService";
 
-class GradebooksService {
+class TeachersService {
 
     constructor() {
         this.axios = httpService.axiosInstance;
     }
 
-    async getAll(pageNumber, perPage) {
+    async getAllPaginate({ first_name, last_name }) {
         try {
-            const { data } = await this.axios.get(`/gradebooks?page=${pageNumber + 1}&per_page=${perPage}`);
-            return data;
-        } catch (error) {
-            throw new Error(error);
-        }
-    };
-
-
-    async getGradebooks() {
-        try {
-            const { data } = await this.axios.get("/gradebooks-get-all");
+            const { data } = await this.axios.get("/teachers", {
+                params: {
+                    first_name,
+                    last_name
+                }
+            });
             return data;
         } catch (error) {
             throw new Error(error);
@@ -26,10 +21,19 @@ class GradebooksService {
 
     };
 
+    async getAll() {
+        try {
+            const { data } = await this.axios.get("/teachers-get-all");
+            return data;
+        } catch (error) {
+            throw new Error(error);
+        }
+
+    };
 
     async get(gradebookId) {
         try {
-            const { data } = await this.axios.get(`/gradebooks/${gradebookId}`);
+            const { data } = await this.axios.get(`/gradebooks/${gradebookId}?filter={"include":["comments"]}`);
             return data;
         } catch (error) {
             console.log(error);
@@ -37,9 +41,9 @@ class GradebooksService {
 
     }
 
-    async add(newGradebook) {
+    async add(newPost) {
         try {
-            const { data } = await this.axios.post('gradebooks', newGradebook);
+            const { data } = await this.axios.post('gradebooks/create', newPost);
 
             return data;
         } catch (error) {
@@ -49,9 +53,9 @@ class GradebooksService {
         return null;
     }
 
-    async edit(gradebookId, newGradebook) {
+    async edit(teachersId, newUser) {
         try {
-            const { data } = await this.axios.put(`gradebooks/${gradebookId}/edit`, newGradebook);
+            const { data } = await this.axios.put(`teachers/${teachersId}/edit`, newUser);
             return data;
         } catch (error) {
             console.log(error);
@@ -90,4 +94,4 @@ class GradebooksService {
 
 }
 
-export const gradebooksService = new GradebooksService();
+export const teachersService = new TeachersService();
